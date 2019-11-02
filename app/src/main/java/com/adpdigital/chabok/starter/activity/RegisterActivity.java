@@ -16,17 +16,17 @@ import com.adpdigital.push.AdpPushClient;
 
 public class RegisterActivity extends AppCompatActivity {
     private TextView lblDescription;
+    private EditText userId;
+    private Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        final EditText userId = (EditText) findViewById(R.id.user_id);
-        Button registerBtn = (Button) findViewById(R.id.register_btn);
-
-        lblDescription = (TextView) findViewById(R.id.textView);
-
+        userId = findViewById(R.id.user_id);
+        lblDescription = findViewById(R.id.textView);
+        registerBtn = findViewById(R.id.register_btn);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

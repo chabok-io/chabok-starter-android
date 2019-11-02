@@ -37,6 +37,7 @@ public class StarterApp extends Application {
             AdpPushClient.setDefaultTracker("8iFRmA"); // Optional
 
             chabok = AdpPushClient.get();
+            chabok.setEnableAlertForNotSupportingGcm(false);
             chabok.addListener(this);
             chabok.addNotificationHandler(getNotificationHandler());
             chabok.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {

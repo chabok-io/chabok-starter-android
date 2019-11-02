@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,13 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private AdpPushClient chabok;
+
     private EditText userIdTxt;
     private EditText channelTxt;
-
     private EditText messageBodyTxt;
     private EditText messgeUserIdTxt;
     private EditText messageChannelTxt;
-
     private EditText tagNameTxt;
     private TextView messageLogsTxt;
 
@@ -55,66 +53,20 @@ public class MainActivity extends AppCompatActivity {
                     null);
         }
 
-        this.userIdTxt = (EditText) findViewById(R.id.useridTextView);
-        this.channelTxt = (EditText) findViewById(R.id.channelTextView);
+        this.userIdTxt = findViewById(R.id.useridTextView);
+        this.channelTxt = findViewById(R.id.channelTextView);
 
-        this.messageBodyTxt = (EditText) findViewById(R.id.messageBodyEditText);
-        this.messgeUserIdTxt = (EditText) findViewById(R.id.messageUseridTextView);
-        this.messageChannelTxt = (EditText) findViewById(R.id.messageChannelTextView);
+        this.messageBodyTxt = findViewById(R.id.messageBodyEditText);
+        this.messgeUserIdTxt = findViewById(R.id.messageUseridTextView);
+        this.messageChannelTxt = findViewById(R.id.messageChannelTextView);
 
-        this.tagNameTxt = (EditText) findViewById(R.id.tagsNameTextView);
-        this.messageLogsTxt = (TextView) findViewById(R.id.messageLogsTextView);
+        this.tagNameTxt = findViewById(R.id.tagsNameTextView);
+        this.messageLogsTxt = findViewById(R.id.messageLogsTextView);
 
         final String chabokUserId = AdpPushClient.get().getUserId();
         if (chabokUserId != null) {
             this.userIdTxt.setText(chabokUserId);
         }
-
-        // Register to chabok
-        Button registerButton = (Button) findViewById(R.id.registerButton);
-        registerButton.setOnClickListener(this.registerBtnOnClick());
-
-        Button unregisterButton = (Button) findViewById(R.id.unregisterButton);
-        unregisterButton.setOnClickListener(this.unregisterBtnOnClick());
-
-        Button subscribeButton = (Button) findViewById(R.id.subscribeButton);
-        subscribeButton.setOnClickListener(this.subscribeBtnOnClick());
-
-        Button unsubscribeButton = (Button) findViewById(R.id.unsubscribeButton);
-        unsubscribeButton.setOnClickListener(this.unsubscribeBtnOnClick());
-
-        // Publish
-        Button publishEventButton = (Button) findViewById(R.id.publishEventButton);
-        publishEventButton.setOnClickListener(this.publishEventBtnOnClick());
-
-        Button publishMessageButton = (Button) findViewById(R.id.publishMessageButton);
-        publishMessageButton.setOnClickListener(this.publishMessageBtnOnClick());
-
-        // Tag
-        Button addTagButton = (Button) findViewById(R.id.addTagButton);
-        addTagButton.setOnClickListener(this.addTagBtnOnClick());
-
-        Button removeTagButton = (Button) findViewById(R.id.removeTagButton);
-        removeTagButton.setOnClickListener(this.removeTagBtnOnClick());
-
-        // Track
-        Button addToCartButton = (Button) findViewById(R.id.addToCartButton);
-        addToCartButton.setOnClickListener(this.addToCartBtnOnClick());
-
-        Button purchaseButton = (Button) findViewById(R.id.purchaseButton);
-        purchaseButton.setOnClickListener(this.purchaseBtnOnClick());
-
-        Button likeButton = (Button) findViewById(R.id.likeButton);
-        likeButton.setOnClickListener(this.likeBtnOnClick());
-
-        Button commentButton = (Button) findViewById(R.id.commentButton);
-        commentButton.setOnClickListener(this.commentBtnOnClick());
-
-        Button setUserAttributeButton = (Button) findViewById(R.id.setUserAttributeButton);
-        setUserAttributeButton.setOnClickListener(this.setUserAttributeButtonOnClick());
-
-        Button incrementUserAttributeButton = (Button) findViewById(R.id.incrementUserAttributeButton);
-        incrementUserAttributeButton.setOnClickListener(this.incrementUserAttributeButtonOnClick());
 
         Intent intent = getIntent();
         AdpPushClient.get().appWillOpenUrl(intent.getData());
@@ -140,17 +92,10 @@ public class MainActivity extends AppCompatActivity {
         detachPushClient();
     }
 
-    @Override
-    protected void onDestroy() {
-        detachPushClient();
-        super.onDestroy();
-    }
-
     private void attachPushClient() {
         if (chabok != null) {
             chabok.addListener(this);
         }
-
         fetchAndUpdateConnectionStatus();
     }
 
@@ -244,234 +189,162 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //------------ Register to chabok
-    private View.OnClickListener registerBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userId = MainActivity.this.userIdTxt.getText().toString();
-                if (!userId.trim().contentEquals("")) {
-                    AdpPushClient.get().login(userId);
-                } else {
-                    Toast.makeText(getApplicationContext(), "UserId is empty. Please, enter a userId", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+    public void registerBtnOnClick(View v) {
+        String userId = MainActivity.this.userIdTxt.getText().toString();
+        if (!userId.trim().contentEquals("")) {
+            AdpPushClient.get().login(userId);
+        } else {
+            Toast.makeText(getApplicationContext(), "UserId is empty. Please, enter a userId", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private View.OnClickListener unregisterBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AdpPushClient.get().logout();
-            }
-        };
+    public void unregisterBtnOnClick(View v) {
+        AdpPushClient.get().logout();
     }
 
-    private View.OnClickListener subscribeBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String channel = MainActivity.this.channelTxt.getText().toString();
-                if (!channel.isEmpty()) {
-                    ChabokHelper.subscribe(channel);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Channel is empty. Please, enter a channel name to subscribe on it",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+    public void subscribeBtnOnClick(View v) {
+        final String channel = MainActivity.this.channelTxt.getText().toString();
+        if (!channel.isEmpty()) {
+            ChabokHelper.subscribe(channel);
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Channel is empty. Please, enter a channel name to subscribe on it",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private View.OnClickListener unsubscribeBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String channel = MainActivity.this.channelTxt.getText().toString();
-                if (!channel.isEmpty()) {
-                    ChabokHelper.unsubscribe(channel);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Channel is empty. Please, enter a channel name to unsubscribe to it",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+    public void unsubscribeBtnOnClick(View v) {
+        final String channel = MainActivity.this.channelTxt.getText().toString();
+        if (!channel.isEmpty()) {
+            ChabokHelper.unsubscribe(channel);
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Channel is empty. Please, enter a channel name to unsubscribe to it",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ---------------- Publish
-    private View.OnClickListener publishMessageBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userId = MainActivity.this.messgeUserIdTxt.getText().toString();
-                if (!userId.isEmpty()) {
-                    String channel = MainActivity.this.messageChannelTxt.getText().toString();
-                    String messageBody = MainActivity.this.messageBodyTxt.getText().toString();
+    public void publishMessageBtnOnClick(View v) {
+        String userId = MainActivity.this.messgeUserIdTxt.getText().toString();
+        if (!userId.isEmpty()) {
+            String channel = MainActivity.this.messageChannelTxt.getText().toString();
+            String messageBody = MainActivity.this.messageBodyTxt.getText().toString();
 
-                    if (channel.isEmpty()) {
-                        channel = "default";
-                    }
-
-                    if (messageBody.isEmpty()) {
-                        messageBody = "Hello world :)";
-                    }
-
-                    ChabokHelper.publish(userId, channel, messageBody);
-                }
+            if (channel.isEmpty()) {
+                channel = "default";
             }
-        };
+
+            if (messageBody.isEmpty()) {
+                messageBody = "Hello world :)";
+            }
+
+            ChabokHelper.publish(userId, channel, messageBody);
+        }
     }
 
-    private View.OnClickListener publishEventBtnOnClick() {
-        return new View.OnClickListener() {
-            @SuppressLint("ShowToast")
-            @Override
-            public void onClick(View v) {
-                String eventName = MainActivity.this.messageChannelTxt.getText().toString();
-                String msg = MainActivity.this.messageBodyTxt.getText().toString();
+    public void publishEventBtnOnClick(View v) {
+        String eventName = MainActivity.this.messageChannelTxt.getText().toString();
+        String msg = MainActivity.this.messageBodyTxt.getText().toString();
 
-                if (!eventName.isEmpty()) {
-                    if (msg.isEmpty()) {
-                        msg = "Goal for Iran :)";
-                    }
-
-                    JSONObject data = new JSONObject();
-                    try {
-                        data.put("msg", msg);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    AdpPushClient.get().publishEvent(eventName, data);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Event name is empty.",
-                            Toast.LENGTH_SHORT);
-                }
+        if (!eventName.isEmpty()) {
+            if (msg.isEmpty()) {
+                msg = "Goal for Iran :)";
             }
-        };
+
+            JSONObject data = new JSONObject();
+            try {
+                data.put("msg", msg);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            AdpPushClient.get().publishEvent(eventName, data);
+        } else {
+            Toast.makeText(getApplicationContext(), "Event name is empty.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ---------- Tags
-    private View.OnClickListener addTagBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tagName = MainActivity.this.tagNameTxt.getText().toString();
-                if (!tagName.isEmpty()) {
-                    ChabokHelper.addTag(tagName);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Tag name is empty",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+    public void addTagBtnOnClick(View v) {
+        String tagName = MainActivity.this.tagNameTxt.getText().toString();
+        if (!tagName.isEmpty()) {
+            ChabokHelper.addTag(tagName);
+        } else {
+            Toast.makeText(getApplicationContext(), "Tag name is empty",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private View.OnClickListener removeTagBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tagName = MainActivity.this.tagNameTxt.getText().toString();
-                if (!tagName.isEmpty()) {
-                    ChabokHelper.removeTag(tagName);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Tag name is empty",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+    public void removeTagBtnOnClick(View v) {
+        String tagName = MainActivity.this.tagNameTxt.getText().toString();
+        if (!tagName.isEmpty()) {
+            ChabokHelper.removeTag(tagName);
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Tag name is empty",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ------------ Track
-    private View.OnClickListener addToCartBtnOnClick() {
-        return new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                JSONObject data = new JSONObject();
-                try {
-                    data.put("value", "PRODUCT_123");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                AdpPushClient.get().track("AddToCard", data);
-            }
-        };
+    public void addToCartBtnOnClick(View v) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("value", "PRODUCT_123");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AdpPushClient.get().track("AddToCard", data);
     }
 
-    private View.OnClickListener purchaseBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONObject data = new JSONObject();
-                try {
-                    data.put("capId", 123456);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+    public void purchaseBtnOnClick(View v) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("capId", 123456);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-                AdpPushClient.get().trackPurchase("Purchase",
-                        new ChabokEvent(10000, "RIAL"));
-            }
-        };
+        AdpPushClient.get().trackPurchase("Purchase",
+                new ChabokEvent(10000, "RIAL"));
     }
 
-    private View.OnClickListener likeBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONObject data = new JSONObject();
-                try {
-                    data.put("postId", 654321);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+    public void likeBtnOnClick(View v) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("postId", 654321);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-                AdpPushClient.get().track("Like", data);
-            }
-        };
+        AdpPushClient.get().track("Like", data);
     }
 
-    private View.OnClickListener commentBtnOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONObject data = new JSONObject();
-                try {
-                    data.put("postId", 8654321);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+    public void commentBtnOnClick(View v) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("postId", 8654321);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-                AdpPushClient.get().track("Comment", data);
-            }
-        };
+        AdpPushClient.get().track("Comment", data);
     }
 
-    private View.OnClickListener setUserAttributeButtonOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> attribute = new HashMap<>();
-                attribute.put("firstName", "Chabok");
-                attribute.put("lastName", "Platform");
-                attribute.put("age", 5);
-                attribute.put("gender", "Male");
-                attribute.put("shoesSize", 43);
+    public void setUserAttributeButtonOnClick(View v) {
+        HashMap<String, Object> attribute = new HashMap<>();
+        attribute.put("firstName", "Chabok");
+        attribute.put("lastName", "Platform");
+        attribute.put("age", 5);
+        attribute.put("gender", "Male");
+        attribute.put("shoesSize", 43);
 
-                AdpPushClient.get().setUserAttributes(attribute);
-            }
-        };
+        AdpPushClient.get().setUserAttributes(attribute);
     }
 
-    private View.OnClickListener incrementUserAttributeButtonOnClick() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AdpPushClient.get().incrementUserAttribute("comedy_movie", 1);
-            }
-        };
+    public void incrementUserAttributeButtonOnClick(View v) {
+        AdpPushClient.get().incrementUserAttribute("comedy_movie", 1);
     }
 }

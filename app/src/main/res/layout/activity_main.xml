@@ -27,15 +27,15 @@
                     android:id="@+id/connectionStatusView"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="18dp"
                     android:layout_marginStart="18dp"
+                    android:layout_marginLeft="18dp"
                     android:background="@color/disconnected" />
 
                 <TextView
                     android:id="@+id/connectionStatusTextView"
                     android:layout_gravity="fill"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:text="@string/disconnected" />
 
             </GridLayout>
@@ -62,10 +62,10 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|bottom"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:hint="@string/channel"
                     android:inputType="textPersonName"
                     tools:ignore="RtlHardcoded" />
@@ -82,21 +82,25 @@
                 <Button
                     android:id="@+id/registerButton"
                     android:layout_gravity="fill"
+                    android:onClick="registerBtnOnClick"
                     android:text="@string/register" />
 
                 <Button
                     android:id="@+id/unregisterButton"
                     android:layout_gravity="fill"
+                    android:onClick="unregisterBtnOnClick"
                     android:text="@string/unregister" />
 
                 <Button
                     android:id="@+id/subscribeButton"
                     android:layout_gravity="fill"
+                    android:onClick="subscribeBtnOnClick"
                     android:text="@string/subscribe" />
 
                 <Button
                     android:id="@+id/unsubscribeButton"
                     android:layout_gravity="fill"
+                    android:onClick="unsubscribeBtnOnClick"
                     android:text="@string/unsubscribe" />
             </GridLayout>
 
@@ -110,8 +114,8 @@
                 <EditText
                     android:id="@+id/messageUseridTextView"
                     android:layout_gravity="left|right|top|bottom"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:ems="10"
                     android:hint="@string/user_id"
                     android:inputType="textPersonName"
@@ -122,24 +126,24 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|bottom"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:hint="@string/channel"
                     android:inputType="textPersonName"
                     tools:ignore="RtlHardcoded" />
 
                 <EditText
                     android:id="@+id/messageBodyEditText"
+                    android:layout_row="1"
                     android:layout_column="0"
                     android:layout_columnSpan="2"
                     android:layout_gravity="fill"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_row="1"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:hint="@string/message_text"
                     android:inputType="textPersonName" />
             </GridLayout>
@@ -154,11 +158,13 @@
                 <Button
                     android:id="@+id/publishMessageButton"
                     android:layout_gravity="fill"
+                    android:onClick="publishMessageBtnOnClick"
                     android:text="@string/publish_message" />
 
                 <Button
                     android:id="@+id/publishEventButton"
                     android:layout_gravity="fill"
+                    android:onClick="publishEventBtnOnClick"
                     android:text="@string/publish_event" />
             </GridLayout>
 
@@ -174,10 +180,10 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|bottom"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:hint="@string/tag_name"
                     android:inputType="textPersonName"
                     tools:ignore="RtlHardcoded" />
@@ -185,11 +191,13 @@
                 <Button
                     android:id="@+id/addTagButton"
                     android:layout_gravity="fill"
+                    android:onClick="addTagBtnOnClick"
                     android:text="@string/addtag" />
 
                 <Button
                     android:id="@+id/removeTagButton"
                     android:layout_gravity="fill"
+                    android:onClick="removeTagBtnOnClick"
                     android:text="@string/removetag" />
             </GridLayout>
 
@@ -201,27 +209,28 @@
                 android:rowCount="2">
 
                 <TextView
+                    android:layout_width="wrap_content"
                     android:layout_column="0"
                     android:layout_columnSpan="4"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:text="User attributes" />
 
                 <Button
                     android:id="@+id/setUserAttributeButton"
                     android:layout_gravity="fill"
+                    android:onClick="setUserAttributeButtonOnClick"
                     android:text="Send User Attributes" />
 
                 <Button
                     android:id="@+id/incrementUserAttributeButton"
                     android:layout_gravity="fill"
+                    android:onClick="incrementUserAttributeButtonOnClick"
                     android:text="Increase comedy_movie" />
 
             </GridLayout>
-
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -233,20 +242,22 @@
                 <TextView
                     android:layout_column="0"
                     android:layout_columnSpan="4"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:text="@string/track_user_interactions" />
 
                 <Button
                     android:id="@+id/addToCartButton"
                     android:layout_gravity="fill"
+                    android:onClick="addToCartBtnOnClick"
                     android:text="AddToCard (50,000)" />
 
                 <Button
                     android:id="@+id/purchaseButton"
                     android:layout_gravity="fill"
+                    android:onClick="purchaseBtnOnClick"
                     android:text="Purchase (20,000)" />
             </GridLayout>
 
@@ -256,17 +267,19 @@
                 android:layout_marginTop="0dp"
                 android:columnCount="4"
                 android:rowCount="2">
+
                 <Button
                     android:id="@+id/likeButton"
                     android:layout_gravity="fill"
+                    android:onClick="likeBtnOnClick"
                     android:text="@string/like" />
 
                 <Button
                     android:id="@+id/commentButton"
                     android:layout_gravity="fill"
+                    android:onClick="commentBtnOnClick"
                     android:text="@string/comment" />
             </GridLayout>
-
 
             <TextView
                 android:id="@+id/textView2"
@@ -282,5 +295,7 @@
                 android:scrollbars="vertical" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </RelativeLayout>

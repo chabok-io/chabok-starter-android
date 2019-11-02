@@ -13,13 +13,12 @@
         android:layout_marginTop="70dp"
         android:orientation="vertical">
 
-
         <TextView
             android:id="@+id/textView"
-            android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Welcome to the Chabok starter project" />
+            android:text="Welcome to the Chabok starter project"
+            android:textAlignment="center" />
 
         <EditText
             android:id="@+id/user_id"
@@ -27,8 +26,8 @@
             android:layout_height="58dp"
             android:layout_gravity="center"
             android:layout_marginLeft="38dp"
-            android:layout_marginRight="38dp"
             android:layout_marginTop="25dp"
+            android:layout_marginRight="38dp"
             android:background="@drawable/white_input_bg"
             android:gravity="center"
             android:hint="@string/user_id"
@@ -45,8 +44,8 @@
             android:layout_width="163dp"
             android:layout_height="63dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/blue_btn_bg"
             android:gravity="center"
             android:text="@string/register"
@@ -56,6 +55,5 @@
             android:visibility="gone" />
 
     </LinearLayout>
-
 
 </RelativeLayout>
