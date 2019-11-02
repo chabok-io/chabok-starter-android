@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adpdigital.chabok.starter.R;
+import com.adpdigital.chabok.starter.common.ChabokHelper;
 import com.adpdigital.push.AdpPushClient;
 import com.adpdigital.push.AppState;
 import com.adpdigital.push.Callback;
@@ -48,7 +49,10 @@ public class MainActivity extends AppCompatActivity {
         chabok.addListener(this);
 
         if (chabok.hasProtectedAppSupport()) {
-            chabok.showProtectedAppSettings(MainActivity.this, getString(R.string.app_name), null, null);
+            chabok.showProtectedAppSettings(MainActivity.this,
+                    getString(R.string.app_name),
+                    null,
+                    null);
         }
 
         this.userIdTxt = (EditText) findViewById(R.id.useridTextView);
@@ -111,9 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button incrementUserAttributeButton = (Button) findViewById(R.id.incrementUserAttributeButton);
         incrementUserAttributeButton.setOnClickListener(this.incrementUserAttributeButtonOnClick());
-
-//        Button publishBackgroundButton = (Button) findViewById(R.id.publishBackgroundButton);
-//        publishBackgroundButton.setOnClickListener(this.publishBackgroundButtonOnClick());
 
         Intent intent = getIntent();
         AdpPushClient.get().appWillOpenUrl(intent.getData());
@@ -272,23 +273,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String channel = MainActivity.this.channelTxt.getText().toString();
                 if (!channel.isEmpty()) {
-                    AdpPushClient.get().subscribe(channel, new Callback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Subscribed on channel " + channel,
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Fail to subscribe on channel for reason " + throwable.getLocalizedMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    ChabokHelper.subscribe(channel);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Channel is empty. Please, enter a channel name to subscribe on it", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Channel is empty. Please, enter a channel name to subscribe on it",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -300,23 +289,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String channel = MainActivity.this.channelTxt.getText().toString();
                 if (!channel.isEmpty()) {
-                    AdpPushClient.get().unsubscribe(channel, new Callback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Unsubscribe to channel " + channel,
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Fail to subscribe on channel for reason " + throwable.getLocalizedMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    ChabokHelper.unsubscribe(channel);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Channel is empty. Please, enter a channel name to unsubscribe to it", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Channel is empty. Please, enter a channel name to unsubscribe to it",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -340,17 +317,7 @@ public class MainActivity extends AppCompatActivity {
                         messageBody = "Hello world :)";
                     }
 
-                    AdpPushClient.get().publish(userId, channel, messageBody, new Callback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            Toast.makeText(getApplicationContext(), "Message was successfully sent", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Toast.makeText(getApplicationContext(), "Fail to send message", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    ChabokHelper.publish(userId, channel, messageBody);
                 }
             }
         };
@@ -378,7 +345,8 @@ public class MainActivity extends AppCompatActivity {
 
                     AdpPushClient.get().publishEvent(eventName, data);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Event name is empty.", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), "Event name is empty.",
+                            Toast.LENGTH_SHORT);
                 }
             }
         };
@@ -391,19 +359,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tagName = MainActivity.this.tagNameTxt.getText().toString();
                 if (!tagName.isEmpty()) {
-                    AdpPushClient.get().addTag(tagName, new Callback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            Toast.makeText(getApplicationContext(), "Tag added to userId devices", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Toast.makeText(getApplicationContext(), "Fail adding tag to userId devices", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    ChabokHelper.addTag(tagName);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Tag name is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tag name is empty",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -415,19 +374,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tagName = MainActivity.this.tagNameTxt.getText().toString();
                 if (!tagName.isEmpty()) {
-                    AdpPushClient.get().removeTag(tagName, new Callback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            Toast.makeText(getApplicationContext(), "Tag removed to userId devices", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Toast.makeText(getApplicationContext(), "Fail adding tag to userId devices", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    ChabokHelper.removeTag(tagName);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Tag name is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Tag name is empty",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -461,7 +412,8 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                AdpPushClient.get().trackPurchase("Purchase", new ChabokEvent(10000, "RIAL"));
+                AdpPushClient.get().trackPurchase("Purchase",
+                        new ChabokEvent(10000, "RIAL"));
             }
         };
     }
@@ -522,23 +474,4 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
-//    private View.OnClickListener publishBackgroundButtonOnClick() {
-//        return new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                JSONObject data = new JSONObject();
-//
-//                try {
-//                    data.put("lat", 32.3);
-//                    data.put("lng", 52.4);
-//                    data.put("ts", System.currentTimeMillis());
-//                    AdpPushClient.get().publishBackground("geo", data);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        };
-//    }
 }
