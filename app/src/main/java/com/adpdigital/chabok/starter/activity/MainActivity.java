@@ -1,33 +1,33 @@
 package com.adpdigital.chabok.starter.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import org.json.JSONObject;
-import android.widget.Toast;
 import android.widget.Button;
-import org.json.JSONException;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.adpdigital.push.AppState;
-import com.adpdigital.push.Callback;
-import android.annotation.SuppressLint;
+import android.widget.Toast;
 
-import com.adpdigital.push.ChabokEvent;
-import com.adpdigital.push.PushMessage;
 import com.adpdigital.chabok.starter.R;
 import com.adpdigital.push.AdpPushClient;
+import com.adpdigital.push.AppState;
+import com.adpdigital.push.Callback;
+import com.adpdigital.push.ChabokEvent;
 import com.adpdigital.push.ConnectionStatus;
+import com.adpdigital.push.PushMessage;
 
-import androidx.appcompat.app.AppCompatActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-    String TAG = "MainActivity";
     private AdpPushClient chabok;
     private EditText userIdTxt;
     private EditText channelTxt;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void onEvent(final PushMessage message){
+    public void onEvent(final PushMessage message) {
         runOnUiThread(new Runnable() {
 
             @Override
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void onEvent(AppState state){
+    public void onEvent(AppState state) {
         switch (state) {
             case REGISTERED:
                 Log.d(TAG, "Registered ..........");
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateConnectionStatus(ConnectionStatus status) {
-        View connectionStatusView =  findViewById(R.id.connectionStatusView);
+        View connectionStatusView = findViewById(R.id.connectionStatusView);
         TextView connectionStatus = (TextView) findViewById(R.id.connectionStatusTextView);
 
         if (connectionStatus != null && status != null) {
@@ -248,30 +248,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String userId = MainActivity.this.userIdTxt.getText().toString();
-                if (!userId.trim().contentEquals("")){
-                    AdpPushClient.get().register(userId);
+                if (!userId.trim().contentEquals("")) {
+                    AdpPushClient.get().login(userId);
                 } else {
-                    Toast.makeText(getApplicationContext(),"UserId is empty. Please, enter a userId",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "UserId is empty. Please, enter a userId", Toast.LENGTH_SHORT).show();
                 }
             }
         };
     }
 
-    private View.OnClickListener unregisterBtnOnClick(){
+    private View.OnClickListener unregisterBtnOnClick() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdpPushClient.get().unregister();
+                AdpPushClient.get().logout();
             }
         };
     }
 
-    private View.OnClickListener subscribeBtnOnClick(){
+    private View.OnClickListener subscribeBtnOnClick() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String channel = MainActivity.this.channelTxt.getText().toString();
-                if (!channel.isEmpty()){
+                if (!channel.isEmpty()) {
                     AdpPushClient.get().subscribe(channel, new Callback() {
                         @Override
                         public void onSuccess(Object o) {
@@ -288,18 +288,18 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(),"Channel is empty. Please, enter a channel name to subscribe on it",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Channel is empty. Please, enter a channel name to subscribe on it", Toast.LENGTH_SHORT).show();
                 }
             }
         };
     }
 
-    private View.OnClickListener unsubscribeBtnOnClick(){
+    private View.OnClickListener unsubscribeBtnOnClick() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String channel = MainActivity.this.channelTxt.getText().toString();
-                if (!channel.isEmpty()){
+                if (!channel.isEmpty()) {
                     AdpPushClient.get().unsubscribe(channel, new Callback() {
                         @Override
                         public void onSuccess(Object o) {
@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(),"Channel is empty. Please, enter a channel name to unsubscribe to it",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Channel is empty. Please, enter a channel name to unsubscribe to it", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -328,11 +328,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String userId = MainActivity.this.messgeUserIdTxt.getText().toString();
-                if (!userId.isEmpty()){
+                if (!userId.isEmpty()) {
                     String channel = MainActivity.this.messageChannelTxt.getText().toString();
                     String messageBody = MainActivity.this.messageBodyTxt.getText().toString();
 
-                    if (channel.isEmpty()){
+                    if (channel.isEmpty()) {
                         channel = "default";
                     }
 
@@ -343,12 +343,12 @@ public class MainActivity extends AppCompatActivity {
                     AdpPushClient.get().publish(userId, channel, messageBody, new Callback() {
                         @Override
                         public void onSuccess(Object o) {
-                            Toast.makeText(getApplicationContext(),"Message was successfully sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Message was successfully sent", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Throwable throwable) {
-                            Toast.makeText(getApplicationContext(),"Fail to send message", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Fail to send message", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
 
                     AdpPushClient.get().publishEvent(eventName, data);
                 } else {
-                    Toast.makeText(getApplicationContext(),"Event name is empty.", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), "Event name is empty.", Toast.LENGTH_SHORT);
                 }
             }
         };
@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String tagName = MainActivity.this.tagNameTxt.getText().toString();
-                if (!tagName.isEmpty()){
+                if (!tagName.isEmpty()) {
                     AdpPushClient.get().addTag(tagName, new Callback() {
                         @Override
                         public void onSuccess(Object o) {
@@ -403,18 +403,18 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(),"Tag name is empty",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tag name is empty", Toast.LENGTH_SHORT).show();
                 }
             }
         };
     }
 
     private View.OnClickListener removeTagBtnOnClick() {
-        return new View.OnClickListener(){
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String tagName = MainActivity.this.tagNameTxt.getText().toString();
-                if (!tagName.isEmpty()){
+                if (!tagName.isEmpty()) {
                     AdpPushClient.get().removeTag(tagName, new Callback() {
                         @Override
                         public void onSuccess(Object o) {
@@ -427,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(),"Tag name is empty",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tag name is empty", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -435,13 +435,13 @@ public class MainActivity extends AppCompatActivity {
 
     // ------------ Track
     private View.OnClickListener addToCartBtnOnClick() {
-        return new View.OnClickListener(){
+        return new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("value","PRODUCT_123");
+                    data.put("value", "PRODUCT_123");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("capId",123456);
+                    data.put("capId", 123456);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -472,12 +472,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("postId",654321);
+                    data.put("postId", 654321);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                AdpPushClient.get().track("Like",data);
+                AdpPushClient.get().track("Like", data);
             }
         };
     }
@@ -488,12 +488,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("postId",8654321);
+                    data.put("postId", 8654321);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                AdpPushClient.get().track("Comment",data);
+                AdpPushClient.get().track("Comment", data);
             }
         };
     }
@@ -508,7 +508,6 @@ public class MainActivity extends AppCompatActivity {
                 attribute.put("age", 5);
                 attribute.put("gender", "Male");
                 attribute.put("shoesSize", 43);
-
 
                 AdpPushClient.get().setUserAttributes(attribute);
             }

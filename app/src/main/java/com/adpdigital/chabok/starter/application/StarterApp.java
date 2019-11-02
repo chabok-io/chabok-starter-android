@@ -1,24 +1,22 @@
 package com.adpdigital.chabok.starter.application;
 
-import android.net.Uri;
-import android.util.Log;
-import android.os.Bundle;
-import org.json.JSONObject;
 import android.app.Application;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-
-import com.adpdigital.push.ChabokNotificationAction;
-import com.adpdigital.push.OnDeeplinkResponseListener;
-import com.adpdigital.push.PushMessage;
+import com.adpdigital.chabok.starter.activity.MainActivity;
 import com.adpdigital.push.AdpPushClient;
 import com.adpdigital.push.ChabokNotification;
+import com.adpdigital.push.ChabokNotificationAction;
+import com.adpdigital.push.LogLevel;
 import com.adpdigital.push.NotificationHandler;
-import com.adpdigital.chabok.starter.activity.MainActivity;
-import static com.adpdigital.chabok.starter.common.Constants.YOUR_APP_ID;
-import static com.adpdigital.chabok.starter.common.Constants.SDK_PASSWORD;
-import static com.adpdigital.chabok.starter.common.Constants.SDK_USERNAME;
-import static com.adpdigital.chabok.starter.common.Constants.YOUR_API_KEY;
+import com.adpdigital.push.OnDeeplinkResponseListener;
+import com.adpdigital.push.PushMessage;
+import com.adpdigital.push.config.Environment;
+
+import org.json.JSONObject;
 
 public class StarterApp extends Application {
 
@@ -30,30 +28,17 @@ public class StarterApp extends Application {
         super.onCreate();
 
         initPushClient();
-
-        String userId = chabok.getUserId();
-        if (userId != null && !userId.isEmpty()) {
-            chabok.register(userId);
-        } else {
-            chabok.registerAsGuest();
-        }
     }
 
     private synchronized void initPushClient() {
         if (chabok == null) {
-            chabok = AdpPushClient.init(
-                    getApplicationContext(),
-                    MainActivity.class,
-                    YOUR_APP_ID,
-                    YOUR_API_KEY,
-                    SDK_USERNAME,
-                    SDK_PASSWORD
-            );
-            chabok.setDevelopment(true);
+            AdpPushClient.configureEnvironment(Environment.SANDBOX); // Mandatory
+            AdpPushClient.setLogLevel(LogLevel.VERBOSE); // Optional
+            AdpPushClient.setDefaultTracker("8iFRmA"); // Optional
+
+            chabok = AdpPushClient.get();
             chabok.addListener(this);
             chabok.addNotificationHandler(getNotificationHandler());
-            chabok.setDefaultTracker("8iFRmA");
-
             chabok.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
                 @Override
                 public boolean launchReceivedDeeplink(Uri uri) {
@@ -63,8 +48,8 @@ public class StarterApp extends Application {
         }
     }
 
-    private NotificationHandler getNotificationHandler(){
-        return new NotificationHandler(){
+    private NotificationHandler getNotificationHandler() {
+        return new NotificationHandler() {
 
             @Override
             public Class getActivityClass(ChabokNotification chabokNotification) {
@@ -73,7 +58,8 @@ public class StarterApp extends Application {
             }
 
             @Override
-            public boolean buildNotification(ChabokNotification chabokNotification, NotificationCompat.Builder builder) {
+            public boolean buildNotification(ChabokNotification chabokNotification,
+                                             NotificationCompat.Builder builder) {
                 // use builder to customize the notification object
                 // return false to prevent this notification to be shown to the user, otherwise true
                 getDataFromChabokNotification(chabokNotification);
@@ -81,12 +67,13 @@ public class StarterApp extends Application {
             }
 
             @Override
-            public boolean notificationOpened(ChabokNotification message, ChabokNotificationAction notificationAction) {
-                if (notificationAction.type == ChabokNotificationAction.ActionType.ActionTaken){
+            public boolean notificationOpened(ChabokNotification message,
+                                              ChabokNotificationAction notificationAction) {
+                if (notificationAction.type == ChabokNotificationAction.ActionType.ActionTaken) {
                     //Click on an action.
-                } else if (notificationAction.type == ChabokNotificationAction.ActionType.Opened){
+                } else if (notificationAction.type == ChabokNotificationAction.ActionType.Opened) {
                     //Notification opened
-                } else if (notificationAction.type == ChabokNotificationAction.ActionType.Dismissed){
+                } else if (notificationAction.type == ChabokNotificationAction.ActionType.Dismissed) {
                     //Notification dismissed
                 }
 
@@ -121,16 +108,8 @@ public class StarterApp extends Application {
     public void onEvent(PushMessage message) {
         Log.d(TAG, "\n\n--------------------\n\nGOT MESSAGE " + message + "\n\n");
         JSONObject data = message.getData();
-        if (data != null){
+        if (data != null) {
             Log.d(TAG, "--------------------\n\n The message data is : " + data + "\n\n");
         }
-    }
-
-    @Override
-    public void onTerminate() {
-        if (chabok != null)
-            chabok.dismiss();
-
-        super.onTerminate();
     }
 }
