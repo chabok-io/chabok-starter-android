@@ -1,4 +1,4 @@
-package com.adpdigital.chabok.starter.common;
+package com.adpdigital.chabok.starter.utils;
 
 import android.util.Log;
 

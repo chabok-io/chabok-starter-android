@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adpdigital.chabok.starter.R;
-import com.adpdigital.chabok.starter.common.ChabokHelper;
+import com.adpdigital.chabok.starter.utils.ChabokHelper;
 import com.adpdigital.push.AdpPushClient;
 import com.adpdigital.push.AppState;
 import com.adpdigital.push.Callback;
