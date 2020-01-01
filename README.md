@@ -5,7 +5,7 @@ These instructions will get you a copy of the project up and running on your loc
 1. clone the project via git command or download the source code
 
 ```javaScript
-git clone https://github.com/chabokpush/chabok-starter-android.git
+git clone https://github.com/chabok-io/chabok-starter-android.git
 ```
 
 
@@ -18,11 +18,11 @@ Please use the following account:
 >
 > **Password** : `starter`
 
-for more information about this app please visit our [website](http://chabokpush.com) and refer to chabok [documents](http://doc.chabokpush.com) section.
+for more information about this app please visit our [website](http://chabok.io) and refer to chabok [documents](http://doc.chabok.io) section.
 
 ## Screenshot : 
-<img src="https://github.com/chabokpush/chabok-starter-android/raw/master/starter.png" width="270px" height="470px"/>
+<img src="https://github.com/chabok-io/chabok-starter-android/raw/master/starter.png" width="270px" height="470px"/>
 
 ## Download and Install
 
-<img src="https://github.com/chabokpush/chabok-starter-android/raw/master/starter.qr.png" width="150px" height="150px"/>
+<img src="https://github.com/chabok-io/chabok-starter-android/raw/master/starter.qr.png" width="150px" height="150px"/>
