@@ -32,9 +32,10 @@ public class StarterApp extends Application {
 
     private synchronized void initPushClient() {
         if (chabok == null) {
-            AdpPushClient.configureEnvironment(Environment.SANDBOX); // Mandatory
-            AdpPushClient.setLogLevel(LogLevel.VERBOSE); // Optional
+            
             AdpPushClient.setDefaultTracker("8iFRmA"); // Optional
+            AdpPushClient.setLogLevel(LogLevel.VERBOSE); // Optional
+            AdpPushClient.configureEnvironment(Environment.SANDBOX); // Mandatory
 
             chabok = AdpPushClient.get();
             chabok.setEnableAlertForNotSupportingGcm(false);
